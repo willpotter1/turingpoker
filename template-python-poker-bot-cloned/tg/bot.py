@@ -22,15 +22,24 @@ class Bot:
     def start_game(self, my_id: str):
         raise NotImplementedError("Must override start_game")
 
-    def __init__(self, host: str, port: int, room: str, username: str):
+    def __init__(self, host: str, port: int, room: str, party: str, key: str):
         self.host = host
         self.port = port
         self.room = room
-        self.username = username
+        self.party = party
+        self.key = key
 
     async def start(self):
-        async for ws in connect(f"ws://{self.host}:{str(self.port)}/parties/poker/{self.room}"):
-            await ws.send(json.dumps({'type': 'join-game', 'username': self.username}))
+        port = f":{self.port}" if self.port else ''
+        protocol = 's' if self.host != 'localhost' else ''
+        url = f"ws{protocol}://{self.host}{port}/parties/{self.party}/{self.room}"
+
+        headers = {
+            "Tg-Bot-Authorization": f"Bearer {self.key}",
+        }
+        
+        async for ws in connect(url, extra_headers=headers):
+            await ws.send(json.dumps({'type': 'join-game'}))
             async for message in ws:
                 try:
                     state = json.loads(message, object_hook=lambda d: SimpleNamespace(**util.decamilize(d)))
@@ -52,7 +61,7 @@ class Bot:
                             pass
                     if state.game_state is not None and state.hand is not None:
                         # only move if we are responding to an opponent action
-                        if state.game_state.whose_turn == state.username and should_act:
+                        if state.game_state.whose_turn == state.client_id and should_act:
                             try:
                                 action = self.act(state.game_state, state.hand)
                                 await ws.send(json.dumps({'type': 'action', 'action': util.camelize(action)}))
