@@ -20,18 +20,7 @@ def evalDeck(state: types.PokerSharedState, hand: types.Card):
     :param state: PokerSharedState
     :param hand: list[Card, Card]
     :return: int
-    """
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    return
-
-def isFlush(state: types.PokerSharedState, hand: types.Card):
-    all_cards = state.cards + hand
-    first_suit = all_cards[0].suit
-    return all(card.suit == first_suit for card in all_cards)
-=======
-=======
->>>>>>> Stashed changes
+    """    
     cards = [hand[0], hand[1]]
 
     if state.round == 'flop': 
@@ -49,15 +38,9 @@ def isFlush(state: types.PokerSharedState, hand: types.Card):
         cards.append(state.cards[2])
         cards.append(state.cards[3])
         cards.append(state.cards[4])
-
-    
-
-
-    
-
-<<<<<<< Updated upstream
     return
->>>>>>> Stashed changes
-=======
-    return
->>>>>>> Stashed changes
+
+def isFlush(state: types.PokerSharedState, hand: types.Card):
+    all_cards = state.cards + hand
+    first_suit = all_cards[0].suit
+    return all(card.suit == first_suit for card in all_cards)
