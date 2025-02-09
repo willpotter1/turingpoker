@@ -8,6 +8,10 @@ from tg import types
 
 
 
+
+
+
+
 def evalDeck(state: types.PokerSharedState, hand: types.Card):
     """
     Evaluate the combination of Shared State and the player's hand.
@@ -18,6 +22,7 @@ def evalDeck(state: types.PokerSharedState, hand: types.Card):
     :return: int
     """
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     return
 
 def isFlush(state: types.PokerSharedState, hand: types.Card):
@@ -25,6 +30,8 @@ def isFlush(state: types.PokerSharedState, hand: types.Card):
     first_suit = all_cards[0].suit
     return all(card.suit == first_suit for card in all_cards)
 =======
+=======
+>>>>>>> Stashed changes
     cards = [hand[0], hand[1]]
 
     if state.round == 'flop': 
@@ -48,5 +55,9 @@ def isFlush(state: types.PokerSharedState, hand: types.Card):
 
     
 
+<<<<<<< Updated upstream
+    return
+>>>>>>> Stashed changes
+=======
     return
 >>>>>>> Stashed changes

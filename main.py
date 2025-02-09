@@ -33,10 +33,6 @@ class TemplateBot(Bot):
     def act(self, state, hand):
         print('asked to act')
         print('acting', state, hand, self.my_id)
-        if (hand[0].rank == hand[1].rank):
-            return {'type': 'raise', 'amount':100}
-        evalDeck(state, hand)
-        return {'type' : 'fold'}
 
         hand_strength = evalDeck(state, hand)
 
@@ -62,6 +58,7 @@ class TemplateBot(Bot):
             elif strength >= 6:
                 return {'raise' : 100}
             
+        
 
     def opponent_action(self, action, player):
         #print('opponent action?', action, player)
