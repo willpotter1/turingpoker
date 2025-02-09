@@ -34,7 +34,7 @@ class TemplateBot(Bot):
         print('asked to act')
         print('acting', state, hand, self.my_id)
 
-        strength = evalDeck(state, hand)
+        strength: int = evalDeck(state, hand)
 
         if (state.round == 'pre-flop'): 
             if (state.target_bet <= 50):
@@ -43,46 +43,15 @@ class TemplateBot(Bot):
                 return {'type' :'call'}
             elif (hand[0].rank == Rank.ACE and hand[0].rank == Rank.ACE):
                 return {'type' : 'raise', 'amount' : 300}
-            return {'type' : 'fold'}
-        elif (state.round == 'flop'):
-            if 3 <= strength <= 5:
-                return {'type' : 'call'}
-            elif strength >= 5:
-                return {'type' :'raise', 'amount' : 100}
-            elif strength == 6:
-                return {'type' :'raise', 'amount' : 200}
-            elif strength == 7:
-                return {'type' :'raise', 'amount' : 300}
-            elif strength >= 8:
-                return {'type' : 'raise', 'amount' : 1000}
-            else:
+            return {'type' : 'fold'} # default
+        else:
+            if strength <= 2:
                 return {'type' : 'fold'}
-        elif (state.round == 'turn'):
-            if 3 <= strength <= 5:
+            elif 3 <= strength <= 5:
                 return {'type' : 'call'}
-            elif strength >= 5:
-                return {'type' :'raise', 'amount' : 100}
-            elif strength == 6:
-                return {'type' :'raise', 'amount' : 200}
-            elif strength == 7:
-                return {'type' :'raise', 'amount' : 300}
-            elif strength >= 8:
-                return {'type' : 'raise', 'amount' : 1000}
             else:
-                return {'type' : 'fold'}
-        elif (state.round == 'river'):
-            if 3 <= strength <= 5:
-                return {'type' : 'call'}
-            elif strength >= 5:
-                return {'type' :'raise', 'amount' : 100}
-            elif strength == 6:
-                return {'type' :'raise', 'amount' : 200}
-            elif strength == 7:
-                return {'type' :'raise', 'amount' : 300}
-            elif strength >= 8:
-                return {'type' : 'raise', 'amount' : 1000}
-            else:
-                return {'type' : 'fold'}
+                amount: float = 100 * abs(strength - 6)
+                return  {'type' :'raise', 'amount' : amount}
             
         
 
