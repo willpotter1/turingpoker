@@ -74,7 +74,7 @@ def preflop_action2(state : PokerSharedState, hand: List[Card]):
     #Fold
     if action_value ==0:
         return ActionType.FOLD.value
-   #Call
+    #Call
     elif action_value == 1:
         current_bet = state.players[index].current_bet
         target_bet = state.target_bet
@@ -129,7 +129,7 @@ def get_hand_index(hand: List[Card], action_matrix: np.array):
     return action_matrix [rank_to_index[r1]][rank_to_index[r2]]
 
 def preflop_action2(state : PokerSharedState, hand: List[Card]):
-    
+    index: int = 0;
     for playerId, player in enumerate(state.players):
         if player.id == 'Magnus Poker':
             index = playerId
