@@ -1,16 +1,5 @@
 from pokerHierarchy import PokerHierarchy
-import sys
-import os
-sys.path.append(os.path.join(os.curdir, 'template-python-poker-bot-cloned','tg'))
 from tg import types
-
-
-
-
-
-
-
-
 
 def evalDeck(state: types.PokerSharedState, hand: types.Card):
     """
@@ -57,7 +46,7 @@ def isFullHouse(state, hand):
         # Check if there's another rank with 2 or more cards (excluding the first three)
         has_pair = any(count >= 2 and i != three_index for i, count in enumerate(ranks))
         return has_pair
-    return false
+    return False
 
 def isPair(state, hand):
     all_cards = state.cards + hand

@@ -5,7 +5,7 @@ import argparse
 from tg.bot import Bot
 from tg.types import *
 import time
-import evalDeck
+from evalDeck import evalDeck
 
 import sys
 import os
@@ -34,9 +34,9 @@ class TemplateBot(Bot):
         print('asked to act')
         print('acting', state, hand, self.my_id)
 
-        hand_strength = evalDeck(state, hand)
+        strength = evalDeck(state, hand)
 
-        if (state.round == 'preflop'): 
+        if (state.round == 'pre-flop'): 
             if (state.target_bet <= 50):
                 return {'type' :'call'}
             elif (hand[0].rank == hand[1].rank and state.target_bet <= 250):
@@ -45,7 +45,6 @@ class TemplateBot(Bot):
                 return {'type' : 'raise', 'amount' : 300}
             return {'type' : 'fold'}
         elif (state.round == 'flop'):
-            strength = evalDeck(state, hand)
             if 3 <= strength <= 5:
                 return {'type' : 'call'}
             elif strength >= 5:
@@ -59,7 +58,6 @@ class TemplateBot(Bot):
             else:
                 return {'type' : 'fold'}
         elif (state.round == 'turn'):
-            strength = evalDeck(state, hand)
             if 3 <= strength <= 5:
                 return {'type' : 'call'}
             elif strength >= 5:
@@ -73,7 +71,6 @@ class TemplateBot(Bot):
             else:
                 return {'type' : 'fold'}
         elif (state.round == 'river'):
-            strength = evalDeck(state, hand)
             if 3 <= strength <= 5:
                 return {'type' : 'call'}
             elif strength >= 5:
