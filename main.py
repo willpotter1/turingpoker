@@ -161,8 +161,6 @@ class TemplateBot(Bot):
                        return { 'type' : 'raise', 'amount' : state.target_bet * 3}
                 if (strength >= 6):
                     return {'type' : 'raise', 'amount' : state.target_bet * 6}
-
-               
         
 
     def opponent_action(self, action, player):

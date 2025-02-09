@@ -5,7 +5,6 @@ from evalDeck import isFlush, isStraight, isFullHouse, isStraight, isStraight, i
 from tg import types
 from tg.types import *
 
-
 class TestEvalDeck(unittest.TestCase):
     def test_is_flush_true_using_all_cards(self):
         state = types.PokerSharedState(
@@ -248,7 +247,6 @@ class TestEvalDeck(unittest.TestCase):
             Card(Rank.FOUR, Suit.HEARTS)
         ]
         self.assertTrue(isTwoPair(state, hand))
-
 
 if __name__ == '__main__':
     unittest.main()

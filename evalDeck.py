@@ -74,7 +74,7 @@ def isTwoPair(state, hand):
     for card in all_cards:
         ranks[card.rank - 1] += 1
     has_pair = any(count >= 2 for count in ranks)
-    if has_pair:
+    if has_pair
         pair_index = next(i for i, count in enumerate(ranks) if count >=2)
         has_second_pair = any(count >= 2 and i!= pair_index for i, count in enumerate(ranks))
         return has_second_pair
