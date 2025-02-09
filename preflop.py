@@ -57,31 +57,42 @@ button_3bet_matrix = np.array([
 
 def preflop_action2(state : PokerSharedState, hand: List[Card]):
     
+    index = 0
+    op_index = 0
     for playerId, player in enumerate(state.players):
         bot_name: str = open('BOT_NAME.txt', 'r').read()
         if player.id.lower() == bot_name.lower():
             index = playerId
-            break
+        else: 
+            op_index =  playerId
 
-    if state.dealer_position == index:
+    # bb calc
+    op_bb = state.players[op_index].current_bet / state.big_blind
+
+    if (op_bb <= 5): 
+        #use loosest chart
         action_matrix = button_matrix
-    elif state.dealer_position != index:
+        print("using loose chart")
+    elif (5 < op_bb <= 15): 
+        # use medium chart
         action_matrix = bb_matrix
-    else:
+        print("using mid chart")
+    else: 
+        #using tighest chart
         action_matrix = button_3bet_matrix
+        print("using tight chart")
     
     action_value = get_hand_index(hand, action_matrix)
-    #Fold
-    if action_value ==0:
-        return ActionType.FOLD.value
-    #Call
-    elif action_value == 1:
-        current_bet = state.players[index].current_bet
-        target_bet = state.target_bet
-        if current_bet >= target_bet:
+    
+    print("opponent big blind bet " + str(op_bb))
+    if action_value == 0:
+        if (op_bb <= 1):
             return ActionType.CALL.value
         else:
             return ActionType.FOLD.value
+
+    elif action_value == 1:
+        return ActionType.CALL.value
     #Raise
     elif action_value == 2:
         if np.array_equal(action_matrix, button_matrix) == True:
@@ -127,51 +138,3 @@ def get_hand_index(hand: List[Card], action_matrix: np.array):
         else:
             return action_matrix [rank_to_index[r1]][rank_to_index[r2]]
     return action_matrix [rank_to_index[r1]][rank_to_index[r2]]
-
-def preflop_action2(state : PokerSharedState, hand: List[Card]):
-    index: int = 0;
-    bot_name: str = open('BOT_NAME.txt', 'r').read();
-    for playerId, player in enumerate(state.players):
-        if player.id.lower() == bot_name.lower():
-            index = playerId
-            break
-
-    if state.dealer_position == index:
-        if state.players[index].current_bet == 50:
-            action_matrix = button_matrix
-        else:
-            action_matrix = button_3bet_matrix
-    elif state.dealer_position != index:
-        action_matrix = bb_matrix
-
-    
-    action_value = get_hand_index(hand, action_matrix)
-
-    #Fold
-    if action_value ==0:
-        return ActionType.FOLD.value
-    #Call
-    elif action_value == 1:
-        current_bet = state.players[index].current_bet
-        target_bet = state.target_bet
-        if current_bet >= target_bet:
-            return ActionType.CALL.value
-        else:
-            return ActionType.FOLD.value
-    #Raise
-    elif action_value == 2:
-        if np.array_equal(action_matrix, button_matrix) == True:
-            raise_amount = state.target_bet * 2
-        elif np.array_equal(action_matrix, bb_matrix) == True:
-            raise_amount = state.target_bet * 3
-        elif np.array_equal(action_matrix, button_3bet_matrix) == True:
-            raise_amount = state.target_bet * 4
-        
-        stack_size = state.players[index].stack
-        if stack_size >= raise_amount:
-            print (ActionType.RAISE.value, raise_amount)
-            return ActionType.RAISE.value, raise_amount
-        else:
-            print(ActionType.CALL.value)
-            return ActionType.CALL.value
-
