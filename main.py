@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 import asyncio
 import argparse
-from betStrength import betStrenth
+from betStrength import betStrength
 from tg.bot import Bot
 from tg.types import *
 import time
 from evalDeck import evalDeck
 from preflop import preflop_action2
-from betStrength import betStrenth
+from betStrength import betStrength
 
 import sys
 import os
@@ -36,10 +36,18 @@ class TemplateBot(Bot):
         print('asked to act')
 
         strength = evalDeck(state, hand)
-        opponent_strength = betStrenth(state)
+        opponent_strength = betStrength(state)
         print('our hand ' + str(hand[0].rank) + str(hand[1].rank))
         print('opponent strength' + str(opponent_strength))
         print('our strength ' +  str(strength))
+
+        index = 0 
+        for playerId, player in enumerate(state.players):
+            if player.id == 'magnus poker':
+                ind = playerId
+                break
+        
+        print('our stack' + str(state.players[ind].stack))
 
         if (state.round == 'pre-flop'): 
             preflop_val = preflop_action2(state=state, hand=hand)
