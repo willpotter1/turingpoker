@@ -5,6 +5,7 @@ import argparse
 from tg.bot import Bot
 from tg.types import *
 import time
+import evalDeck
 
 import sys
 import os
@@ -34,6 +35,7 @@ class TemplateBot(Bot):
         print('acting', state, hand, self.my_id)
         if (hand[0].rank == hand[1].rank):
             return {'type': 'raise', 'amount':100}
+        evalDeck(state, hand)
         return {'type' : 'fold'}
 
     def opponent_action(self, action, player):
