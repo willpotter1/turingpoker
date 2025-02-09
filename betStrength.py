@@ -1,7 +1,6 @@
 from tg.types import PokerSharedState
-from evalDeck import evalDeck
 
-def betStrenth(state: PokerSharedState) -> int:
+def betStrength(state: PokerSharedState) -> int:
     """
     return a number that tells us how strong we think our opponent's hand
     is depending on their bet sizing. we should be comparing their bet sizing
