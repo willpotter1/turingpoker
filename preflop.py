@@ -84,11 +84,11 @@ def preflop_action2(state : PokerSharedState, hand: List[Card]):
     #Raise
     elif action_value == 2:
         if np.array_equal(action_matrix, button_matrix) == True:
-            raise_amount = state.target_bet * 3
+            raise_amount = state.target_bet * 2
         elif np.array_equal(action_matrix, bb_matrix) == True:
-            raise_amount = state.target_bet *10
+            raise_amount = state.target_bet * 9
         elif np.array_equal(action_matrix, button_3bet_matrix) == True:
-            raise_amount = state.target_bet * 23
+            raise_amount = state.target_bet * 20
         
         stack_size = state.players[index].stack
         if stack_size >= raise_amount:

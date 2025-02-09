@@ -17,11 +17,12 @@ def betStrenth(state: PokerSharedState) -> int:
     opponent_bet: int = state.target_bet
     relative_bet_size: int = opponent_bet / pot_size
 
-    if relative_bet_size > 0.8:
+    print("relative " +  str(relative_bet_size))
+    if relative_bet_size > 1.0:
         return 4    # Opponent likely has a strong hand.
-    elif relative_bet_size > 0.4:
+    elif relative_bet_size > 0.6:
         return 3    # Consider folding weaker hands.
-    elif relative_bet_size > 0.1:
+    elif relative_bet_size > 0.4:
         return 2    # Proceed cautiously.
     else:
         return 1    # Consider bluffing or raising.
