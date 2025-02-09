@@ -38,6 +38,31 @@ class TemplateBot(Bot):
         evalDeck(state, hand)
         return {'type' : 'fold'}
 
+        hand_strength = evalDeck(state, hand)
+
+        if (state.round == 'preflop'): 
+            action = preflop_action(myPosition, hand)
+            return {action}
+        elif (state.round == 'flop'):
+            strength = evaldeck(state, hand)
+            if 3 <= strength <= 5:
+                return {'call'}
+            elif strength >= 6:
+                return {'raise' : 100}
+        elif (state.round == 'turn'):
+            strength = evaldeck(state, hand)
+            if 3 <= strength <= 5:
+                return {'call'}
+            elif strength >= 6:
+                return {'raise' : 100}
+        elif (state.round == 'river'):
+            strength = evaldeck(state, hand)
+            if 3 <= strength <= 5:
+                return {'call'}
+            elif strength >= 6:
+                return {'raise' : 100}
+            
+
     def opponent_action(self, action, player):
         #print('opponent action?', action, player)
         pass
