@@ -7,7 +7,7 @@ from tg.types import *
 import time
 from evalDeck import evalDeck
 from preflop import preflop_action2
-from betStrength import betStrenth
+from betStrength import betStrength
 
 import sys
 import os
@@ -39,7 +39,7 @@ class TemplateBot(Bot):
         strength: int = evalDeck(state, hand)
         print('strength:', strength)
 
-        bet_strength: int = betStrenth(state)
+        bet_strength: int = betStrength(state)
         print('bet strength:', bet_strength)
 
         if (state.round == 'pre-flop'): 
