@@ -6,6 +6,7 @@ from tg.bot import Bot
 from tg.types import *
 import time
 from evalDeck import evalDeck
+from preflop import preflop_action2
 
 import sys
 import os
@@ -39,7 +40,13 @@ class TemplateBot(Bot):
         strength = evalDeck(state, hand)
 
         if (state.round == 'pre-flop'): 
-            if (state.target_bet <= 50):
+            preflop_val = preflop_action2(state=state, hand=hand)
+            if (preflop_val == 'raise'):
+                return {'type': 'raise', 'amount': preflop_val[1]}
+            else:
+                return {'type': preflop_val}
+        else:
+            if strength <= 2:
                 return {'type' :'call'}
             elif (hand[0].rank == hand[1].rank and state.target_bet <= 250):
                 return {'type' :'call'}
@@ -57,62 +64,6 @@ class TemplateBot(Bot):
             elif ((hand[0].rank == Rank.KING and hand[1].rank == Rank.QUEEN) or (hand[0].rank == Rank.QUEEN and hand[1].rank == Rank.KING)):
                 return {'type' : 'raise' , 'amount' : 70}
             return {'type' : 'fold'}
-        elif (state.round == 'flop'):
-            if 1 <= strength <= 2:
-                if (state.target_bet <= 100):
-                    return {'type' : 'call'}
-                else :
-                    return {'type' : 'fold'}
-            elif 3 <= strength <= 4:
-                return {'type' : 'raise', 'amount' : 100}
-            elif strength >= 5:
-                return {'type' :'raise', 'amount' : 100}
-            elif strength == 6:
-                return {'type' :'raise', 'amount' : 200}
-            elif strength == 7:
-                return {'type' :'raise', 'amount' : 300}
-            elif strength >= 8:
-                return {'type' : 'raise', 'amount' : 1000}
-            else:
-                amount: int = 100 * abs(strength - 6)
-                return  {'type' :'raise', 'amount' : amount}
-                return {'type' : 'fold'}
-        elif (state.round == 'turn'):
-            if 1 <= strength <= 2:
-                if (state.target_bet <= 100):
-                    return {'type' : 'call'}
-                else :
-                    return {'type' : 'fold'}
-            if 3 <= strength <= 4:
-                return {'type' : 'call'}
-            elif strength >= 5:
-                return {'type' :'raise', 'amount' : 100}
-            elif strength == 6:
-                return {'type' :'raise', 'amount' : 200}
-            elif strength == 7:
-                return {'type' :'raise', 'amount' : 300}
-            elif strength >= 8:
-                return {'type' : 'raise', 'amount' : 1000}
-            else:
-                return {'type' : 'fold'}
-        elif (state.round == 'river'):
-            if 1 <= strength <= 2:
-                if (state.target_bet <= 100):
-                    return {'type' : 'call'}
-                else :
-                    return {'type' : 'fold'}
-            if 3 <= strength <= 4:
-                return {'type' : 'call'}
-            elif strength >= 5:
-                return {'type' :'raise', 'amount' : 100}
-            elif strength == 6:
-                return {'type' :'raise', 'amount' : 200}
-            elif strength == 7:
-                return {'type' :'raise', 'amount' : 300}
-            elif strength >= 8:
-                return {'type' : 'raise', 'amount' : 1000}
-            else:
-                return {'type' : 'fold'}
             
         
 
