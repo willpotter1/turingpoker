@@ -1,7 +1,7 @@
 import unittest
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
-from evalDeck import isFlush
+from evalDeck import isFlush, isStraight, isFullHouse
 from tg import types
 
 class TestEvalDeck(unittest.TestCase):
@@ -96,30 +96,51 @@ class TestEvalDeck(unittest.TestCase):
         ]
         self.assertTrue(isFlush(state, hand))
 
+    def test_is_straight_using_all_cards(self):
+        state = types.PokerSharedState(
+            dealer_position=0, 
+            small_blind=0, 
+            big_blind=0, 
+            pot=0, 
+            target_bet=0, 
+            players=[], 
+            round=types.PokerRound.FLOP, 
+            done=False, 
+            cards=[
+                types.Card(types.Rank.ACE, types.Suit.HEARTS),
+                types.Card(types.Rank.TWO, types.Suit.SPADES), 
+                types.Card(types.Rank.THREE, types.Suit.HEARTS), 
+                types.Card(types.Rank.FOUR, types.Suit.CLUBS)
+            ]
+        )
+        hand = [
+            types.Card(types.Rank.FIVE, types.Suit.DIAMONDS)
+        ]
+        self.assertTrue(isStraight(state, hand))
 
     def test_full_house(self):
         # Community cards: Three, Four, Jack, Jack
         # Player's hand: Jack, Four
         # Full house: Three Jacks and two Fours
-        state = PokerSharedState(
+        state = types.PokerSharedState(
             dealer_position=0,
             small_blind=0,
             big_blind=0,
             pot=0,
             target_bet=0,
             players=[],
-            round=PokerRound.RIVER,
+            round=types.PokerRound.RIVER,
             done=False,
             cards=[
-                Card(Rank.THREE, Suit.HEARTS),
-                Card(Rank.FOUR, Suit.HEARTS),
-                Card(Rank.JACK, Suit.HEARTS),
-                Card(Rank.JACK, Suit.SPADES),
+                types.Card(types.Rank.THREE, types.Suit.HEARTS),
+                types.Card(types.Rank.FOUR, types.Suit.HEARTS),
+                types.Card(types.Rank.JACK, types.Suit.HEARTS),
+                types.Card(types.Rank.JACK, types.Suit.SPADES),
             ]
         )
         hand = [
-            Card(Rank.JACK, Suit.DIAMONDS),
-            Card(Rank.FOUR, Suit.CLUBS)
+            types.Card(types.Rank.JACK, types.Suit.DIAMONDS),
+            types.Card(types.Rank.FOUR, types.Suit.CLUBS)
         ]
         self.assertTrue(isFullHouse(state, hand))
 
@@ -127,25 +148,25 @@ class TestEvalDeck(unittest.TestCase):
         # Community cards: Four, Four, Jack, Jack
         # Player's hand: Four, Jack
         # Two three-of-a-kinds: Three Fours and three Jacks
-        state = PokerSharedState(
+        state = types.PokerSharedState(
             dealer_position=0,
             small_blind=0,
             big_blind=0,
             pot=0,
             target_bet=0,
             players=[],
-            round=PokerRound.RIVER,
+            round=types.PokerRound.RIVER,
             done=False,
             cards=[
-                Card(Rank.FOUR, Suit.HEARTS),
-                Card(Rank.FOUR, Suit.DIAMONDS),
-                Card(Rank.JACK, Suit.HEARTS),
-                Card(Rank.JACK, Suit.SPADES),
+                types.Card(types.Rank.FOUR, types.Suit.HEARTS),
+                types.Card(types.Rank.FOUR, types.Suit.DIAMONDS),
+                types.Card(types.Rank.JACK, types.Suit.HEARTS),
+                types.Card(types.Rank.JACK, types.Suit.SPADES),
             ]
         )
         hand = [
-            Card(Rank.FOUR, Suit.CLUBS),
-            Card(Rank.JACK, Suit.DIAMONDS)
+            types.Card(types.Rank.FOUR, types.Suit.CLUBS),
+            types.Card(types.Rank.JACK, types.Suit.DIAMONDS)
         ]
         self.assertTrue(isFullHouse(state, hand))
 
@@ -153,25 +174,25 @@ class TestEvalDeck(unittest.TestCase):
         # Community cards: Three, Four, Jack, Jack
         # Player's hand: Two, Three
         # No full house: Only two Jacks and no three-of-a-kind
-        state = PokerSharedState(
+        state = types.PokerSharedState(
             dealer_position=0,
             small_blind=0,
             big_blind=0,
             pot=0,
             target_bet=0,
             players=[],
-            round=PokerRound.RIVER,
+            round=types.PokerRound.RIVER,
             done=False,
             cards=[
-                Card(Rank.THREE, Suit.HEARTS),
-                Card(Rank.FOUR, Suit.HEARTS),
-                Card(Rank.JACK, Suit.HEARTS),
-                Card(Rank.JACK, Suit.SPADES),
+                types.Card(types.Rank.THREE, types.Suit.HEARTS),
+                types.Card(types.Rank.FOUR, types.Suit.HEARTS),
+                types.Card(types.Rank.JACK, types.Suit.HEARTS),
+                types.Card(types.Rank.JACK, types.Suit.SPADES),
             ]
         )
         hand = [
-            Card(Rank.TWO, Suit.HEARTS),
-            Card(Rank.THREE, Suit.SPADES)
+            types.Card(types.Rank.TWO, types.Suit.HEARTS),
+            types.Card(types.Rank.THREE, types.Suit.SPADES)
         ]
         self.assertFalse(isFullHouse(state, hand))
 
@@ -179,25 +200,25 @@ class TestEvalDeck(unittest.TestCase):
         # Community cards: Jack, Jack, Jack, Four
         # Player's hand: Jack, Four
         # Four of a kind and a pair: Four Jacks and two Fours
-        state = PokerSharedState(
+        state = types.PokerSharedState(
             dealer_position=0,
             small_blind=0,
             big_blind=0,
             pot=0,
             target_bet=0,
             players=[],
-            round=PokerRound.RIVER,
+            round=types.PokerRound.RIVER,
             done=False,
             cards=[
-                Card(Rank.JACK, Suit.HEARTS),
-                Card(Rank.JACK, Suit.SPADES),
-                Card(Rank.JACK, Suit.DIAMONDS),
-                Card(Rank.FOUR, Suit.HEARTS),
+                types.Card(types.Rank.JACK, types.Suit.HEARTS),
+                types.Card(types.Rank.JACK, types.Suit.SPADES),
+                types.Card(types.Rank.JACK, types.Suit.DIAMONDS),
+                types.Card(types.Rank.FOUR, types.Suit.HEARTS),
             ]
         )
         hand = [
-            Card(Rank.JACK, Suit.CLUBS),
-            Card(Rank.FOUR, Suit.SPADES)
+            types.Card(types.Rank.JACK, types.Suit.CLUBS),
+            types.Card(types.Rank.FOUR, types.Suit.SPADES)
         ]
         self.assertTrue(isFullHouse(state, hand))
 
@@ -205,24 +226,24 @@ class TestEvalDeck(unittest.TestCase):
         # Community cards: Jack, Jack, Four, Four
         # Player's hand: Two, Two
         # Three pairs: No three-of-a-kind
-        state = PokerSharedState(
+        state = types.PokerSharedState(
             dealer_position=0,
             small_blind=0,
             big_blind=0,
             pot=0,
             target_bet=0,
             players=[],
-            round=PokerRound.RIVER,
+            round=types.PokerRound.RIVER,
             done=False,
             cards=[
-                Card(Rank.JACK, Suit.HEARTS),
-                Card(Rank.JACK, Suit.SPADES),
-                Card(Rank.FOUR, Suit.HEARTS),
-                Card(Rank.FOUR, Suit.DIAMONDS),
+                types.Card(types.Rank.JACK, types.Suit.HEARTS),
+                types.Card(types.Rank.JACK, types.Suit.SPADES),
+                types.Card(types.Rank.FOUR, types.Suit.HEARTS),
+                types.Card(types.Rank.FOUR, types.Suit.DIAMONDS),
             ]
         )
         hand = [
-            Card(Rank.TWO, Suit.HEARTS),
-            Card(Rank.TWO, Suit.SPADES)
+            types.Card(types.Rank.TWO, types.Suit.HEARTS),
+            types.Card(types.Rank.TWO, types.Suit.SPADES)
         ]
         self.assertFalse(isFullHouse(state, hand))

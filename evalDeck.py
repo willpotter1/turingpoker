@@ -4,14 +4,6 @@ import os
 sys.path.append(os.path.join(os.curdir, 'template-python-poker-bot-cloned','tg'))
 from tg import types
 
-
-
-
-
-
-
-
-
 def evalDeck(state: types.PokerSharedState, hand: types.Card):
     """
     Evaluate the combination of Shared State and the player's hand.
@@ -40,7 +32,7 @@ def evalDeck(state: types.PokerSharedState, hand: types.Card):
         cards.append(state.cards[4])
     return
 
-def isFlush(state: types.PokerSharedState, hand: types.Card):
+def isFlush(state: types.PokerSharedState, hand: list[types.Card]):
     all_cards = state.cards + hand
     suits = [card.suit for card in all_cards]
     return any(suits.count(suit) >= 5 for suit in suits)
@@ -61,3 +53,31 @@ def isFullHouse(state, hand):
         return has_pair
 
     return false
+
+
+def isStraight(state: types.PokerSharedState, hand: list[types.Card]):
+    all_cards = state.cards + hand;
+    # Extract and Preprocess Ranks
+    ranks: set[types.Rank] = set(); # Use a set to avoid duplicates
+    for card in all_cards:
+        match (card.rank):
+            case types.Rank.JACK:
+                ranks.add(11);
+                continue;
+            case types.Rank.QUEEN:
+                ranks.add(12);
+                continue;
+            case types.Rank.KING:
+                ranks.add(13);
+                continue;
+            case types.Rank.ACE:
+                ranks.add(1);
+                continue;
+            case _:
+                ranks.add(card.rank);
+    ranks_list:list[types.Card] = sorted(ranks); # Sort the ranks
+    # Check for a Straight
+    for i in range(len(ranks_list) - 4):
+        if ranks_list[i] == ranks_list[i + 1] - 1 == ranks_list[i + 2] - 2 == ranks_list[i + 3] - 3 == ranks_list[i + 4] - 4:
+            return True;
+    return False;
