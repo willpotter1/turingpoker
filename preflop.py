@@ -58,7 +58,8 @@ button_3bet_matrix = np.array([
 def preflop_action2(state : PokerSharedState, hand: List[Card]):
     
     for playerId, player in enumerate(state.players):
-        if player.id == 'magnus poker':
+        bot_name: str = open('BOT_NAME.txt', 'r').read()
+        if player.id.lower() == bot_name.lower():
             index = playerId
             break
 

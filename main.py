@@ -7,7 +7,7 @@ from tg.types import *
 import time
 from evalDeck import evalDeck
 from preflop import preflop_action2
-from betStrength import betStrenth
+from betStrength import betStrength
 
 import sys
 import os
