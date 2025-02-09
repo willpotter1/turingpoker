@@ -14,12 +14,12 @@ def betStrength(state: PokerSharedState) -> int:
     """
     pot_size: int = state.pot
     opponent_bet: int = 0
-    bot_name: str = open('BOT_NAME.txt', 'r').read()
     for playerID,player in enumerate(state.players):
+        bot_name: str = open('BOT_NAME.txt', 'r').read()
         if player.id.lower() != bot_name.lower():
             opponent_index = playerID
             break
-    state.players[opponent_index].current_bet 
+    opponent_bet = state.players[opponent_index].current_bet 
     relative_bet_size: int = opponent_bet / pot_size
 
     print("relative " +  str(relative_bet_size))
