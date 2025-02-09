@@ -33,6 +33,7 @@ cnt = 0
 # Always call
 class TemplateBot(Bot):
     def act(self, state, hand):
+        time.sleep(0.1)
         print('asked to act')
 
         strength = evalDeck(state, hand)
