@@ -11,21 +11,32 @@ def evalDeck(state: types.PokerSharedState, hand: types.Card):
     :return: int
     """    
     if isFullHouse(state, hand):
-        return 7
+        return PokerHierarchy.FULL_HOUSE.value
     elif isFlush(state, hand):
-        return 6
+        return PokerHierarchy.FLUSH.value
     elif isStraight(state, hand):
-        return 5
+        return PokerHierarchy.STRAIGHT.value
     elif isTriple(state, hand):
-        return 4
+        return PokerHierarchy.THREE_OF_A_KIND.value
     elif isTwoPair(state, hand):
-        return 3
+        return PokerHierarchy.TWO_PAIR.value
     elif isPair(state, hand):
-        return 2
+        return PokerHierarchy.ONE_PAIR.value
+    elif hasHighCard(state, hand): 
+        return PokerHierarchy.HIGH_CARD.value
     else: 
-        return 1
+        return 0
 
-
+def hasHighCard(state: types.PokerSharedState, hand: types.Card):
+    all_cards = state.cards + hand
+    ranks = [0 for i in range(13)]
+    high_ranks = {
+        types.Rank.ACE, 
+        types.Rank.JACK, 
+        types.Rank.QUEEN,
+        types.Rank.KING
+    }
+    return any(card.rank in high_ranks for card in all_cards)
 
 def isFlush(state: types.PokerSharedState, hand: types.Card):
     all_cards = state.cards + hand
