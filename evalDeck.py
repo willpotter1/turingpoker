@@ -17,5 +17,5 @@ def evalDeck(state: types.PokerSharedState, hand: types.Card):
 
 def isFlush(state: types.PokerSharedState, hand: types.Card):
     all_cards = state.cards + hand
-    first_suit = all_cards[0].suit
-    return all(card.suit == first_suit for card in all_cards)
+    suits = [card.suit for card in all_cards]
+    return any(suits.count(suit) >= 5 for suit in suits)

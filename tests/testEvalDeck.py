@@ -5,7 +5,7 @@ from evalDeck import isFlush
 from tg import types
 
 class TestEvalDeck(unittest.TestCase):
-    def test_is_flush_true(self):
+    def test_is_flush_true_using_all_cards(self):
         state = types.PokerSharedState(
             dealer_position=0, 
             small_blind=0, 
@@ -72,6 +72,29 @@ class TestEvalDeck(unittest.TestCase):
             types.Card(types.Rank.TWO, types.Suit.CLUBS)
         ]
         self.assertFalse(isFlush(state, hand))
+
+    def test_is_flush_true_have_spare_cards(self):
+        state = types.PokerSharedState(
+            dealer_position=0, 
+            small_blind=0, 
+            big_blind=0, 
+            pot=0, 
+            target_bet=0, 
+            players=[], 
+            round=types.PokerRound.RIVER, 
+            done=False, 
+            cards=[
+                types.Card(types.Rank.THREE, types.Suit.HEARTS), 
+                types.Card(types.Rank.FOUR, types.Suit.HEARTS),
+                types.Card(types.Rank.JACK, types.Suit.HEARTS),
+                types.Card(types.Rank.JACK, types.Suit.SPADES),
+            ]
+        )
+        hand = [
+            types.Card(types.Rank.ACE, types.Suit.HEARTS), 
+            types.Card(types.Rank.TWO, types.Suit.HEARTS)
+        ]
+        self.assertTrue(isFlush(state, hand))
 
 if __name__ == '__main__':
     unittest.main()
