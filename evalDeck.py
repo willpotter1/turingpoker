@@ -21,24 +21,22 @@ def evalDeck(state: types.PokerSharedState, hand: types.Card):
     :param hand: list[Card, Card]
     :return: int
     """    
-    cards = [hand[0], hand[1]]
+    if isFullHouse(state, hand):
+        return 7
+    elif isFlush(state, hand):
+        return 6
+    elif isStraight(state, hand):
+        return 5
+    elif isTriple(state, hand):
+        return 4
+    elif isTwoPair(state, hand):
+        return 3
+    elif isPair(state, hand):
+        return 2
+    else: 
+        return 1
 
-    if state.round == 'flop': 
-        cards.append(state.cards[0])
-        cards.append(state.cards[1])
-        cards.append(state.cards[2])
-    elif state.round == 'turn':
-        cards.append(state.cards[0])
-        cards.append(state.cards[1])
-        cards.append(state.cards[2])
-        cards.append(state.cards[3])
-    elif state.round == 'river':
-        cards.append(state.cards[0])
-        cards.append(state.cards[1])
-        cards.append(state.cards[2])
-        cards.append(state.cards[3])
-        cards.append(state.cards[4])
-    return
+
 
 def isFlush(state: types.PokerSharedState, hand: types.Card):
     all_cards = state.cards + hand
@@ -59,5 +57,59 @@ def isFullHouse(state, hand):
         # Check if there's another rank with 2 or more cards (excluding the first three)
         has_pair = any(count >= 2 and i != three_index for i, count in enumerate(ranks))
         return has_pair
-
     return false
+
+def isPair(state, hand):
+    all_cards = state.cards + hand
+    ranks = [0 for i in range(13)]
+    for card in all_cards:
+        ranks[card.rank - 1] += 1
+    has_pair = any(count >= 2 for count in ranks)
+    return has_pair
+
+
+def isTwoPair(state, hand):
+    all_cards = state.cards + hand
+    ranks = [0 for i in range(13)]
+    for card in all_cards:
+        ranks[card.rank - 1] += 1
+    has_pair = any(count >= 2 for count in ranks)
+    if has_pair:
+        pair_index = next(i for i, count in enumerate(ranks) if count >=3)
+        has_second_pair = any(count >= 2 and i!= pair_index for i, count in enumerate(ranks))
+        return has_second_pair
+
+def isTriple(state, hand):
+    all_cards = state.cards + hand
+    ranks = [0 for i in range(13)]
+    for card in all_cards:
+        ranks[card.rank - 1] += 1
+    has_pair = any(count >= 3 for count in ranks)
+    return has_pair
+
+def isStraight(state: types.PokerSharedState, hand: list[types.Card]):
+    all_cards = state.cards + hand;
+    # Extract and Preprocess Ranks
+    ranks: set[types.Rank] = set(); # Use a set to avoid duplicates
+    for card in all_cards:
+        match (card.rank):
+            case types.Rank.JACK:
+                ranks.add(11);
+                continue;
+            case types.Rank.QUEEN:
+                ranks.add(12);
+                continue;
+            case types.Rank.KING:
+                ranks.add(13);
+                continue;
+            case types.Rank.ACE:
+                ranks.add(1);
+                continue;
+            case _:
+                ranks.add(card.rank);
+    ranks_list:list[types.Card] = sorted(ranks); # Sort the ranks
+    # Check for a Straight
+    for i in range(len(ranks_list) - 4):
+        if ranks_list[i] == ranks_list[i + 1] - 1 == ranks_list[i + 2] - 2 == ranks_list[i + 3] - 3 == ranks_list[i + 4] - 4:
+            return True;
+    return False;
