@@ -1,5 +1,8 @@
 from pokerHierarchy import PokerHierarchy
-import tg.types as types
+import sys
+import os
+sys.path.append(os.path.join(os.curdir, 'template-python-poker-bot-cloned','tg'))
+from tg import types
 
 def evalDeck(state: types.PokerSharedState, hand: types.Card):
     """
@@ -11,3 +14,8 @@ def evalDeck(state: types.PokerSharedState, hand: types.Card):
     :return: int
     """
     return
+
+def isFlush(state: types.PokerSharedState, hand: types.Card):
+    all_cards = state.cards + hand
+    first_suit = all_cards[0].suit
+    return all(card.suit == first_suit for card in all_cards)
