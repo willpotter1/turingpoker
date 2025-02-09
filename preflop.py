@@ -130,8 +130,9 @@ def get_hand_index(hand: List[Card], action_matrix: np.array):
 
 def preflop_action2(state : PokerSharedState, hand: List[Card]):
     index: int = 0;
+    bot_name: str = open('BOT_NAME.txt', 'r').read();
     for playerId, player in enumerate(state.players):
-        if player.id == 'Magnus Poker':
+        if player.id.lower() == bot_name.lower():
             index = playerId
             break
 
