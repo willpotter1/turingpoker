@@ -6,6 +6,7 @@ from tg.bot import Bot
 from tg.types import *
 import time
 from evalDeck import evalDeck
+from preflop import preflop_action2
 
 import sys
 import os
@@ -37,13 +38,11 @@ class TemplateBot(Bot):
         strength: int = evalDeck(state, hand)
 
         if (state.round == 'pre-flop'): 
-            if (state.target_bet <= 50):
-                return {'type' :'call'}
-            elif (hand[0].rank == hand[1].rank and state.target_bet <= 250):
-                return {'type' :'call'}
-            elif (hand[0].rank == Rank.ACE and hand[0].rank == Rank.ACE):
-                return {'type' : 'raise', 'amount' : 300}
-            return {'type' : 'fold'} # default
+            preflop_val = preflop_action2(state=state, hand=hand)
+            if (preflop_val == 'raise'):
+                return {'type': 'raise', 'amount': preflop_val[1]}
+            else:
+                return {'type': preflop_val}
         else:
             if strength <= 2:
                 return {'type' : 'fold'}
