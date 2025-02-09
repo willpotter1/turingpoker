@@ -247,3 +247,6 @@ class TestEvalDeck(unittest.TestCase):
             types.Card(types.Rank.TWO, types.Suit.SPADES)
         ]
         self.assertFalse(isFullHouse(state, hand))
+
+if __name__ == '__main__':
+    unittest.main()
