@@ -36,6 +36,7 @@ class TemplateBot(Bot):
 
         strength: int = evalDeck(state, hand)
         print('strength:', strength)
+        strength = evalDeck(state, hand)
 
         if (state.round == 'pre-flop'): 
             if (state.target_bet <= 50):
@@ -43,16 +44,75 @@ class TemplateBot(Bot):
             elif (hand[0].rank == hand[1].rank and state.target_bet <= 250):
                 return {'type' :'call'}
             elif (hand[0].rank == Rank.ACE and hand[0].rank == Rank.ACE):
-                return {'type' : 'raise', 'amount' : 300}
-            return {'type' : 'fold'} # default
-        else:
-            if strength <= 2:
-                return {'type' : 'fold'}
-            elif 3 <= strength <= 5:
+                return {'type' : 'raise', 'amount' : 350}
+            elif ((hand[0].rank == Rank.KING and hand[0].rank == Rank.KING) or
+            (hand[0].rank == Rank.QUEEN and hand[0].rank == Rank.QUEEN)):
+                return {'type' : 'raise', 'amount' : 250}
+            elif (hand[0].rank == Rank.ACE or hand[0].rank == Rank.ACE and state.target_bet <= 100):
                 return {'type' : 'call'}
+            elif ((hand[0].rank == Rank.ACE and hand[1].rank == Rank.KING) or (hand[0].rank == Rank.KING and hand[1].rank == Rank.ACE)):
+                return {'type' : 'raise' , 'amount' : 100}
+            elif ((hand[0].rank == Rank.ACE and hand[1].rank == Rank.QUEEN) or (hand[0].rank == Rank.QUEEN and hand[1].rank == Rank.ACE)):
+                return {'type' : 'raise' , 'amount' : 70}
+            elif ((hand[0].rank == Rank.KING and hand[1].rank == Rank.QUEEN) or (hand[0].rank == Rank.QUEEN and hand[1].rank == Rank.KING)):
+                return {'type' : 'raise' , 'amount' : 70}
+            return {'type' : 'fold'}
+        elif (state.round == 'flop'):
+            if 1 <= strength <= 2:
+                if (state.target_bet <= 100):
+                    return {'type' : 'call'}
+                else :
+                    return {'type' : 'fold'}
+            elif 3 <= strength <= 4:
+                return {'type' : 'raise', 'amount' : 100}
+            elif strength >= 5:
+                return {'type' :'raise', 'amount' : 100}
+            elif strength == 6:
+                return {'type' :'raise', 'amount' : 200}
+            elif strength == 7:
+                return {'type' :'raise', 'amount' : 300}
+            elif strength >= 8:
+                return {'type' : 'raise', 'amount' : 1000}
             else:
                 amount: int = 100 * abs(strength - 6)
                 return  {'type' :'raise', 'amount' : amount}
+                return {'type' : 'fold'}
+        elif (state.round == 'turn'):
+            if 1 <= strength <= 2:
+                if (state.target_bet <= 100):
+                    return {'type' : 'call'}
+                else :
+                    return {'type' : 'fold'}
+            if 3 <= strength <= 4:
+                return {'type' : 'call'}
+            elif strength >= 5:
+                return {'type' :'raise', 'amount' : 100}
+            elif strength == 6:
+                return {'type' :'raise', 'amount' : 200}
+            elif strength == 7:
+                return {'type' :'raise', 'amount' : 300}
+            elif strength >= 8:
+                return {'type' : 'raise', 'amount' : 1000}
+            else:
+                return {'type' : 'fold'}
+        elif (state.round == 'river'):
+            if 1 <= strength <= 2:
+                if (state.target_bet <= 100):
+                    return {'type' : 'call'}
+                else :
+                    return {'type' : 'fold'}
+            if 3 <= strength <= 4:
+                return {'type' : 'call'}
+            elif strength >= 5:
+                return {'type' :'raise', 'amount' : 100}
+            elif strength == 6:
+                return {'type' :'raise', 'amount' : 200}
+            elif strength == 7:
+                return {'type' :'raise', 'amount' : 300}
+            elif strength >= 8:
+                return {'type' : 'raise', 'amount' : 1000}
+            else:
+                return {'type' : 'fold'}
             
         
 
