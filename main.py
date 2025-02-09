@@ -37,11 +37,10 @@ class TemplateBot(Bot):
 
         strength: int = evalDeck(state, hand)
         print('strength:', strength)
-        strength = evalDeck(state, hand)
 
         if (state.round == 'pre-flop'): 
             preflop_val = preflop_action2(state=state, hand=hand)
-            if (preflop_val == 'raise'):
+            if (type(preflop_val) == tuple):
                 return {'type': 'raise', 'amount': preflop_val[1]}
             else:
                 return {'type': preflop_val}
