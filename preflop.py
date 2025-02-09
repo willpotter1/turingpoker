@@ -129,7 +129,7 @@ def get_hand_index(hand: List[Card], action_matrix: np.array):
     return action_matrix [rank_to_index[r1]][rank_to_index[r2]]
 
 def preflop_action2(state : PokerSharedState, hand: List[Card]):
-    
+    index = 0 
     for playerId, player in enumerate(state.players):
         if player.id == 'Magnus Poker':
             index = playerId

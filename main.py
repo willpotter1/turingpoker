@@ -8,6 +8,7 @@ import time
 from evalDeck import evalDeck
 from preflop import preflop_action2
 from betStrength import betStrength
+from time import sleep
 
 import sys
 import os
@@ -33,6 +34,7 @@ cnt = 0
 # Always call
 class TemplateBot(Bot):
     def act(self, state, hand):
+        sleep(0.1)
         print('asked to act')
 
         strength = evalDeck(state, hand)
@@ -41,14 +43,13 @@ class TemplateBot(Bot):
         print('opponent strength' + str(opponent_strength))
         print('our strength ' +  str(strength))
 
+
         index = 0 
         for playerId, player in enumerate(state.players):
-            if player.id == 'magnus poker':
-                ind = playerId
+            if player.id == 'Magnus Poker':
+                index = playerId
                 break
-        
-        print('our stack' + str(state.players[ind].stack))
-
+        print('our stack' + str(state.players[index].stack))
         if (state.round == 'pre-flop'): 
             preflop_val = preflop_action2(state=state, hand=hand)
             if (type(preflop_val) == tuple):
@@ -56,6 +57,8 @@ class TemplateBot(Bot):
             else:
                 return {'type': preflop_val}
         else:
+            if (state.players[index].stack <= 50):
+                return {'type' : 'call'}
             if (state.round == 'flop'):
                 if (strength == 1):
                     if opponent_strength == 1:
