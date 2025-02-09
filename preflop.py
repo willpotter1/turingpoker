@@ -2,7 +2,7 @@ import numpy as np
 from tg.types import ActionType, Card, Rank, Suit, PokerSharedState
 from typing import List
 
-#Playing in Big Blind
+# Playing in Big Blind
 # 2: Raise, 1: Call, 0: Fold
 button_matrix = np.array([
     [2,2,2,2,2,2,2,2,2,2,2,2,2],
@@ -85,11 +85,11 @@ def preflop_action2(state : PokerSharedState, hand: List[Card]):
     #Raise
     elif action_value == 2:
         if np.array_equal(action_matrix, button_matrix) == True:
-            raise_amount = state.target_bet * 3
+            raise_amount = state.target_bet * 2
         elif np.array_equal(action_matrix, bb_matrix) == True:
-            raise_amount = state.target_bet *10
+            raise_amount = state.target_bet * 9
         elif np.array_equal(action_matrix, button_3bet_matrix) == True:
-            raise_amount = state.target_bet * 23
+            raise_amount = state.target_bet * 20
         
         stack_size = state.players[index].stack
         if stack_size >= raise_amount:
@@ -127,3 +127,50 @@ def get_hand_index(hand: List[Card], action_matrix: np.array):
         else:
             return action_matrix [rank_to_index[r1]][rank_to_index[r2]]
     return action_matrix [rank_to_index[r1]][rank_to_index[r2]]
+
+def preflop_action2(state : PokerSharedState, hand: List[Card]):
+    
+    for playerId, player in enumerate(state.players):
+        if player.id == 'Magnus Poker':
+            index = playerId
+            break
+
+    if state.dealer_position == index:
+        if state.players[index].current_bet == 50:
+            action_matrix = button_matrix
+        else:
+            action_matrix = button_3bet_matrix
+    elif state.dealer_position != index:
+        action_matrix = bb_matrix
+
+    
+    action_value = get_hand_index(hand, action_matrix)
+
+    #Fold
+    if action_value ==0:
+        return ActionType.FOLD.value
+    #Call
+    elif action_value == 1:
+        current_bet = state.players[index].current_bet
+        target_bet = state.target_bet
+        if current_bet >= target_bet:
+            return ActionType.CALL.value
+        else:
+            return ActionType.FOLD.value
+    #Raise
+    elif action_value == 2:
+        if np.array_equal(action_matrix, button_matrix) == True:
+            raise_amount = state.target_bet * 2
+        elif np.array_equal(action_matrix, bb_matrix) == True:
+            raise_amount = state.target_bet * 3
+        elif np.array_equal(action_matrix, button_3bet_matrix) == True:
+            raise_amount = state.target_bet * 4
+        
+        stack_size = state.players[index].stack
+        if stack_size >= raise_amount:
+            print (ActionType.RAISE.value, raise_amount)
+            return ActionType.RAISE.value, raise_amount
+        else:
+            print(ActionType.CALL.value)
+            return ActionType.CALL.value
+
