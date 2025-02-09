@@ -45,11 +45,17 @@ class TemplateBot(Bot):
 
 
         index = 0 
+        op_id = 0
         for playerId, player in enumerate(state.players):
-            if player.id == 'Magnus Poker':
+            bot_name: str = open('BOT_NAME.txt', 'r').read()
+            if player.id.lower() == bot_name.lower():
                 index = playerId
-                break
+            else: 
+                op_index =  playerId
         print('our stack' + str(state.players[index].stack))
+        print('round : ' + state.round)
+        if (state.players[op_id].stack == 0 and state.players[op_id].current_bet <= 60 ): 
+            return {'type' : 'call'}
         if (state.round == 'pre-flop'): 
             preflop_val = preflop_action2(state=state, hand=hand)
             if (type(preflop_val) == tuple):
@@ -90,7 +96,7 @@ class TemplateBot(Bot):
                     else:
                        return { 'type' : 'raise', 'amount' : state.target_bet * 3}
                 if (strength >= 6):
-                    return {'type' : 'raise', 'amount' : state}
+                    return {'type' : 'raise', 'amount' : state.target_bet * 6}
             elif (state.round == 'turn'):
                 if (strength == 1):
                     if opponent_strength == 1:
@@ -122,7 +128,7 @@ class TemplateBot(Bot):
                     else:
                        return { 'type' : 'raise', 'amount' : state.target_bet * 3}
                 if (strength >= 6):
-                    return {'type' : 'raise', 'amount' : state}
+                    return {'type' : 'raise', 'amount' : state.target_bet * 5}
             elif (state.round == 'river'):
                 if (strength == 1):
                     if opponent_strength == 1:
@@ -154,7 +160,7 @@ class TemplateBot(Bot):
                     else:
                        return { 'type' : 'raise', 'amount' : state.target_bet * 3}
                 if (strength >= 6):
-                    return {'type' : 'raise', 'amount' : state}
+                    return {'type' : 'raise', 'amount' : state.target_bet * 6}
 
                
         
@@ -162,6 +168,7 @@ class TemplateBot(Bot):
     def opponent_action(self, action, player):
         #print('opponent action?', action, player)
         pass
+
 
     def game_over(self, payouts):
         global cnt
