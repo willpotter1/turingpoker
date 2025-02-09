@@ -2,12 +2,6 @@
 import asyncio
 import argparse
 from betStrength import betStrenth
-from tg.bot import Bot
-from tg.types import *
-import time
-from evalDeck import evalDeck
-from preflop import preflop_action2
-from betStrength import betStrength
 
 import sys
 import os
@@ -145,8 +139,6 @@ class TemplateBot(Bot):
                        return { 'type' : 'raise', 'amount' : state.target_bet * 3}
                 if (strength >= 6):
                     return {'type' : 'raise', 'amount' : state}
-
-               
         
 
     def opponent_action(self, action, player):
