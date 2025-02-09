@@ -52,7 +52,7 @@ def isFullHouse(state, hand):
         has_pair = any(count >= 2 and i != three_index for i, count in enumerate(ranks))
         return has_pair
 
-    return false
+    return False
 
 
 def isStraight(state: types.PokerSharedState, hand: list[types.Card]):
