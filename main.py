@@ -35,6 +35,7 @@ class TemplateBot(Bot):
         print('acting', state, hand, self.my_id)
 
         strength: int = evalDeck(state, hand)
+        print('strength:', strength)
 
         if (state.round == 'pre-flop'): 
             if (state.target_bet <= 50):
@@ -50,7 +51,7 @@ class TemplateBot(Bot):
             elif 3 <= strength <= 5:
                 return {'type' : 'call'}
             else:
-                amount: float = 100 * abs(strength - 6)
+                amount: int = 100 * abs(strength - 6)
                 return  {'type' :'raise', 'amount' : amount}
             
         
