@@ -44,3 +44,20 @@ def isFlush(state: types.PokerSharedState, hand: types.Card):
     all_cards = state.cards + hand
     suits = [card.suit for card in all_cards]
     return any(suits.count(suit) >= 5 for suit in suits)
+
+
+def isFullHouse(state, hand):
+    all_cards = state.cards + hand
+    ranks = [0 for i in range(13)]
+    for card in all_cards:
+        ranks[card.rank - 1] += 1
+    
+    has_three_or_more = any(count >= 3 for count in ranks)
+    if has_three_or_more:
+        # Find the index of the first rank with 3 or more cards
+        three_index = next(i for i, count in enumerate(ranks) if count >= 3)
+        # Check if there's another rank with 2 or more cards (excluding the first three)
+        has_pair = any(count >= 2 and i != three_index for i, count in enumerate(ranks))
+        return has_pair
+
+    return false

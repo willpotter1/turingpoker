@@ -43,20 +43,36 @@ class TemplateBot(Bot):
             strength = evaldeck(state, hand)
             if 3 <= strength <= 5:
                 return {'call'}
-            elif strength >= 6:
+            elif strength >= 5:
                 return {'raise' : 100}
+            elif strength == 6:
+                return {'raise' : 200}
+            elif strength == 7:
+                return {'raise' : 300}
+            else:
+                return {'raise': 1000}
         elif (state.round == 'turn'):
-            strength = evaldeck(state, hand)
             if 3 <= strength <= 5:
                 return {'call'}
-            elif strength >= 6:
+            elif strength >= 5:
                 return {'raise' : 100}
+            elif strength == 6:
+                return {'raise' : 200}
+            elif strength == 7:
+                return {'raise' : 300}
+            else:
+                return {'raise': 1000}
         elif (state.round == 'river'):
-            strength = evaldeck(state, hand)
             if 3 <= strength <= 5:
                 return {'call'}
-            elif strength >= 6:
+            elif strength >= 5:
                 return {'raise' : 100}
+            elif strength == 6:
+                return {'raise' : 200}
+            elif strength == 7:
+                return {'raise' : 300}
+            else:
+                return {'raise': 1000}
             
         
 
