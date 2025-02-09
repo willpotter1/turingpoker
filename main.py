@@ -16,13 +16,13 @@ parser = argparse.ArgumentParser(
     prog='Template bot',
     description='A Turing Games poker bot that always checks or calls, no matter what the target bet is (it never folds and it never raises)')
 
-parser.add_argument('--port', type=int, default=1999,
+parser.add_argument('--port', type=int, default=80,
                     help='The port to connect to the server on')
-parser.add_argument('--host', type=str, default='localhost',
+parser.add_argument('--host', type=str, default='ws.turingpoker.com',
                     help='The host to connect to the server on')
-parser.add_argument('--room', type=str, default='my-new-room',
+parser.add_argument('--room', type=str, default='room4',
                     help='The room to connect to')
-parser.add_argument('--username', type=str, default='bot',
+parser.add_argument('--username', type=str, default='magnus poker',
                     help='The username for this bot (make sure it\'s unique)')
 
 args = parser.parse_args()
